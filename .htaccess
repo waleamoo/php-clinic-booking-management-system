@@ -1,0 +1,9 @@
+#RewriteEngine on
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite Rule for index.php
+# RewriteRule ^public index.php [NC, L]
+
+#RewriteRule ^public/([0-9a-zA-Z_]+)$ ?action=$1 [NC, L]
+#RewriteRule ^(.*)$ index.php?action=$1 [L, QSA]

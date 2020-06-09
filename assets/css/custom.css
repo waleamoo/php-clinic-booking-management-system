@@ -1,0 +1,85 @@
+html, body {
+    background-color: rgba(222, 226, 231, 0.514);
+    color: #000;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 200;
+    height: 100vh;
+    margin: 0;
+}
+
+.links > a {
+    color: black;
+    padding: 0 25px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .1rem;
+    text-decoration: none;
+}
+
+@media (min-width: 481px) and (max-width:767px){
+    .floating {
+        border: 1px solid black;
+        position: absolute;
+        top: 1%;
+        font-size: .5em;
+    }
+    
+    .floating2 {
+        border: 1px solid black;
+        position: absolute;
+        top: 1%;
+        font-size: .5em;
+        right: 50%;
+    }
+}
+
+.mydisp{
+    display: inline-block;
+}
+
+@media (min-width: 1024px) and (max-width: 1280px){
+    .nav-style {
+        padding-right: 100px;
+    }
+}
+
+.nav-style{
+    color: #000 !important;
+    background: #636b6f !important;
+}
+
+.floating {
+    position: absolute;
+    top: 70%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+}
+
+.floating2 {
+    position: absolute;
+    top: 70%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+}
+
+.img-banner{
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+.text-content {
+    color: black;
+    font-size: 1.3em;
+}
+
+#discount{
+    position: absolute;
+    font-size: 1.5vw;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 2px solid black;
+    background: red;
+    padding: 2px 10px 2px 10px;
+    right: 3%;
+    color: white;
+    top: 1%;
+}
