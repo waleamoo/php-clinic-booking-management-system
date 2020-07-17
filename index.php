@@ -6,6 +6,9 @@ require ("model/db.php");
 require ("model/functions.php");
 
 // get the required action
+//$url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+//$url_array = explode("/", $url);
+//$action = end($url_array);
 $action = filter_input(INPUT_POST, "action");
 if ($action == null) {
     $action = filter_input(INPUT_GET, "action");
@@ -13,6 +16,7 @@ if ($action == null) {
         $action = "index";
     }
 }
+
 
 switch ($action){
     case "index":
@@ -25,7 +29,7 @@ switch ($action){
     case "register":
         include("view/register.php");
         break;
-    case "get_consultation":
+    case "consultation-details":
         $id = $_GET["id"];
         // get the consultation using its id
         $consultation = get_a_consultation($id);
@@ -48,12 +52,10 @@ switch ($action){
         $addr = $_POST["addr"];
         $gender = $_POST["gender"];
         $email = $_POST["email"];
-        $password = $_POST["password"];
-        $confirm_password = $_POST["confirm_password"];
 
         // check empty fields
         if(empty($id)|| empty($first_name) || empty($last_name) || empty($tel_h) || empty($tel_c)|| empty($tel_w) || 
-            empty($addr)  || empty($gender) || empty($password) || empty($confirm_password) || empty($dob) ){
+            empty($addr)  || empty($gender)  || empty($dob) ){
             $msg = "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> Please answer all fields.</div>";
             include("view/register.php");
             exit();
@@ -83,11 +85,12 @@ switch ($action){
             exit();
         }
         
+		/*
         if($password !== $confirm_password){
            $msg = "<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> Password does not match.</div>";
             include("view/register.php");
             exit(); 
-        }
+        }*/
         
         if(is_email_valid($email)->rowCount() > 0){
             $msg = "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> $email already exists.</div>";
@@ -101,7 +104,7 @@ switch ($action){
             exit(); 
         }
         
-        $register  = register_user($id, $first_name, $last_name, $tel_h, $tel_w, $tel_c, $addr, $gender, $dob, $email, $password);
+        $register  = register_user($id, $first_name, $last_name, $tel_h, $tel_w, $tel_c, $addr, $gender, $dob, $email);
         if(isset($register)){
             $msg = "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <b>Registration successful.</b></div>";
             include("view/register.php");
@@ -201,7 +204,7 @@ switch ($action){
         session_destroy();
         header("Location: ../index.php");
         break;
-    case "supplement_shop":
+    case "supplement":
         include("view/supplement.php");
         exit(); 
         break;

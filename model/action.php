@@ -23,11 +23,15 @@ if(isset($_POST["page"])){
     //echo $count;
     $pageno = ceil($count/9); // the number of pages 9 products can be displayed
     //echo $pageno;
-    for($i = 1; $i <= $pageno; $i++){
-        echo "<li class='page-item'>
-                <a class='page-link' href='#' id='page' page='$i'>$i</a>
-            </li>";
-    }
+	
+	// if the pageno is > 9 then show pagination
+	if($count > 9){
+		for($i = 1; $i <= $pageno; $i++){
+			echo "<li class='page-item'>
+					<a class='page-link' href='#' id='page' page='$i'>$i</a>
+				</li>";
+		}
+	}
 }
 
 // list the supplement with pagination 
@@ -58,8 +62,8 @@ if(isset($_POST["getProduct"])){
                         <h5 class='card-title'>$supplement_name</h5>
                         <p class='card-text'>R$supplement_price.00</p>
                         <p style='font-size:20px;color:grey;'>$qty in stock</p>
-                        <button pid='$supplement_id' id='product' href='#' class='btn btn-primary btn-sm'>Add to Cart</button>
-                        <button pid='$supplement_id' href='#' class='btn btn-warning btn-sm'>View</button>
+                        <button pid='$supplement_id' id='product' class='btn btn-primary btn-sm'>Add to Cart</button>
+                        <button pid='$supplement_id' id='view_btn' class='btn btn-warning btn-sm'>View</button>
                     </div>
                 </div>
             </div>";
@@ -68,14 +72,44 @@ if(isset($_POST["getProduct"])){
 }
 
 // get product by the selected category
-if(isset($_POST["get_selected_category"]) || isset($_POST["search"])){
+if(isset($_POST["get_selected_category"]) || isset($_POST["search"]) || isset($_POST["viewProduct"])){
     if(isset($_POST["get_selected_category"])){
         $cid = $_POST["cat_id"];
         $result = $con->query("SELECT * FROM supplement WHERE supplement_cat_id = '$cid'");
     }else if(isset ($_POST["search"])){
         $keyword = $_POST["keyword"];
         $result = $con->query("SELECT * FROM supplement WHERE supplement_name LIKE '%$keyword%'");
-    }
+    } else if(isset($_POST["viewProduct"])){
+		$id = $_POST["p_id"];
+		$result = $con->query("SELECT * FROM supplement WHERE supplement_id = '$id'");
+		$res = $result->fetch();
+		
+		echo "<div class='row'>";
+		
+		$supplement_id = $res["supplement_id"];
+        $supplement_cat_id = $res["supplement_cat_id"];
+        $supplement_name = $res["supplement_name"];
+        $supplement_price = $res["supplement_price"];
+        $supplement_img = $res["supplement_img"];
+		$supplement_descr = $res["supplement_descr"];
+        $qty = $res["qty"];
+		echo "<div class='col-sm-12'>
+                <div class='card' style='margin-bottom:2rem;'>
+                    <a href='#'><img class='card-img-top' src='../assets/images/$supplement_img' style='width:200px; height:180px;'></a>
+                    <div class='card-body' style='width:20rem;'>
+                        <h5 class='card-title'>$supplement_name</h5>
+                        <p class='card-text'>R$supplement_price.00</p>
+                        <p style='font-size:20px;color:grey;'>$qty in stock</p>
+						<p>$supplement_descr</p>
+                        <button pid='$supplement_id' id='product' class='btn btn-primary btn-lg'>Add to Cart</button>
+                    </div>
+                </div>
+            </div>";
+		
+		echo "</div>";
+		return; // or exit();
+	}
+	
     
     echo "<div class='row'>";
     if($result->rowCount() > 0){
@@ -88,9 +122,6 @@ if(isset($_POST["get_selected_category"]) || isset($_POST["search"])){
         $supplement_img = $res["supplement_img"];
         $qty = $res["qty"];
 		
-		// if the request is for viewing 
-		
-        
         echo "<div class='col-sm-4'>
                 <div class='card' style='margin-bottom:2rem;'>
                     <a href='#'><img class='card-img-top' src='../assets/images/$supplement_img' style='width:200px; height:180px;'></a>
@@ -99,7 +130,7 @@ if(isset($_POST["get_selected_category"]) || isset($_POST["search"])){
                         <p class='card-text'>R$supplement_price.00</p>
                         <p style='font-size:20px;color:grey;'>$qty in stock</p>
                         <button pid='$supplement_id' id='product' class='btn btn-primary btn-sm'>Add to Cart</button>
-                        <button pid='$supplement_id' id='product_view' class='btn btn-warning btn-sm'>View</button>
+                        <button pid='$supplement_id' id='view_btn' class='btn btn-warning btn-sm'>View</button>
                     </div>
                 </div>
             </div>";

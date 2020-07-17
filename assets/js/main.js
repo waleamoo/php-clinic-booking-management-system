@@ -65,7 +65,22 @@ $(document).ready(function(){
        }
    })
    
-   // pagination functions 
+   // view product 
+   $("body").delegate("#view_btn", "click", function(event){
+	   event.preventDefault();
+	   var p_id = $(this).attr("pid");
+       //alert(p_id);
+       $.ajax({
+        url: "/model/action.php",
+        method: "POST",
+        data: {viewProduct:1,p_id:p_id},
+        success: function(data){
+            $("#get_product").html(data);
+        }
+      })
+   })
+   
+   // pagination functions always runs
    page();
    function page(){
        $.ajax({
